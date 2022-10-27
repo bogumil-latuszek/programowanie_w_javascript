@@ -20,7 +20,7 @@ function onKeyPress(ev){
             sound ='openhat'
             break;
         case 'r':
-            PlayChannel1Recording();
+            PlayChannelRecording(channel1Recording);
             break;
         default:
             sound = 'boom'
@@ -30,25 +30,26 @@ function onKeyPress(ev){
 }
 function ArchiveSound(sound){
     if(sound == 'tink'){
-        const recording = {
+        const soundRecorded = {
             sound: sound,
             time: Date.now()
         }
-        addChannel1Recording(recording)
+        addSoundToRecording(channel1Recording, soundRecorded)
     }
 }
-let channel1Recordings = []
-function addChannel1Recording(channel1recording){
-    channel1Recordings.push(channel1recording)
+let channel1Recording = []
+function addSoundToRecording(channelRecording , newSoundRecorded){
+    channelRecording.push(newSoundRecorded)
 }
 
-function PlayChannel1Recording(){
-    for (let i = 0; i < channel1Recordings.length; i++) {
-        if(i >= channel1Recordings.length-1){
+function PlayChannelRecording(channelRecording){
+    for (let i = 0; i < channelRecording.length; i++) {
+        if(i >= channelRecording.length-1){
             break;
         }
-        let awaitTime = (channel1Recordings[i+1].time - channel1Recordings[i].time)
-        const myTimeout = setTimeout(()=>{playSound(channel1Recordings[i].sound)}, awaitTime);
+        let awaitTime = (channelRecording[i+1].time - channelRecording[i].time)
+        const myTimeout = setTimeout(()=>{playSound(channelRecording[i].sound)}, awaitTime);
+        //console.log("scheduled" + " " + i + ": " + channel1Recordings[i].sound )
       }
 }
 
