@@ -5,7 +5,7 @@ function onKeyPress(ev){
     console.log(ev)
     const key = ev.key
     let sound = 'boom'
-    switch(key){
+    switch(key.toLowerCase()){
         case '1':
             sound ='tink'
             ArchiveSound(sound)
@@ -19,10 +19,9 @@ function onKeyPress(ev){
         case '4':
             sound ='openhat'
             break;
-        case 'R':
-            PlayChannel1Recording();
         case 'r':
             PlayChannel1Recording();
+            break;
         default:
             sound = 'boom'
             break;
@@ -45,16 +44,11 @@ function addChannel1Recording(channel1recording){
 
 function PlayChannel1Recording(){
     for (let i = 0; i < channel1Recordings.length; i++) {
-        playSound(channel1Recordings[i].sound)
-        if(i == channel1Recordings.length-1){
+        if(i >= channel1Recordings.length-1){
             break;
         }
         let awaitTime = (channel1Recordings[i+1].time - channel1Recordings[i].time)
-        let start = Date.now()
-        do{
-
-        }
-        while(Date.now() - start < awaitTime)
+        const myTimeout = setTimeout(()=>{playSound(channel1Recordings[i].sound)}, awaitTime);
       }
 }
 
