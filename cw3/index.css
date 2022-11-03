@@ -1,0 +1,39 @@
+.wrapper {
+    display: block;
+}
+.inline_wrapper {
+    display: inline-block;
+    overflow: auto;
+}
+#channels_play {    
+    display: inline-block;
+    overflow: auto;
+    border-color: black;
+    border-style: solid;
+    border-radius: 5px;
+    margin: 20px;
+    padding: 10px;
+}
+#channels_record {    
+    display: inline-block;
+    overflow: auto;
+    border-color: black;
+    border-style: solid;
+    border-radius: 5px;
+    margin: 20px;
+    padding: 10px;
+}
+.button {
+    display: flow;
+    border-color: black;
+    border-style: solid;
+    border-radius: 5px;
+}
+.checkbox {
+    display: flow;
+    border-color: black;
+    border-style: solid;
+    border-radius: 5px;
+    width: 30px;
+    height: 30px;
+}

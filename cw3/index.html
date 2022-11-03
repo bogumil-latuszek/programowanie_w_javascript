@@ -8,12 +8,47 @@
 </head>
 <body>
     <h1>home page</h1>
-    <script src="drumkit.js"></script>
     <audio src="./sounds/boom.wav" id="boom"></audio>
     <audio src="./sounds/tink.wav" id="tink"></audio>
     <audio src="./sounds/clap.wav" id="clap"></audio>
     <audio src="./sounds/kick.wav" id="kick"></audio>
     <audio src="./sounds/openhat.wav" id="openhat"></audio>
     <audio src="./sounds/hihat.wav" id="hihat"></audio>
+    
+    <div class="wrapper">
+        <div>
+            <h2>record channels:</h2>
+        </div>
+        <div id="channels_record">
+            <div class="inline_wrapper">
+                <div>channel 1:</div>
+                <input type="checkbox" id="ch1" class="checkbox">
+            </div>
+            <div class="inline_wrapper">
+                <div>channel 2:</div>
+                <input type="checkbox" id="ch2" class="checkbox">
+            </div>
+            <div class="inline_wrapper">
+                <div>channel 3:</div>
+                <input type="checkbox" id="ch3" class="checkbox">
+            </div>
+            <div class="inline_wrapper">
+                <div>channel 4:</div>
+                <input type="checkbox" id="ch4" class="checkbox">
+        </div>
+    </div>
+    <div class ="wrapper">
+        <div>
+            <h2>play channels:</h2>
+        </div>
+        <div id="channels_play">
+            <button id="b_ch1" class="button">channel1</button>
+            <button id="b_ch2" class="button">channel2</button>
+            <button id="b_ch3" class="button">channel3</button>
+            <button id="b_ch4" class="button">channel4</button>
+        </div>
+    </div>
+    
+    <script src="drumkit.js"></script>
 </body>
 </html>
