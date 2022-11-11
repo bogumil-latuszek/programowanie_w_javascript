@@ -2,8 +2,8 @@
 const default_note = {
     title: "default",
     content: "default",
-    color: "blue",
-    pinned: true,
+    color: "lightblue",
+    pinned: false,
     creationDate: "17.05.2020",
     tag: "default"
 }
@@ -40,15 +40,21 @@ const submit_note = document.getElementById("submit_button");
 submit_note.addEventListener("click", ()=>{
 
     const note_container = document.getElementById("note_container")
-    const n_title = note_container.children.title.value
-    const n_content = note_container.children.content.value
+    const n_title = document.getElementById("title").value
+    const n_content = document.getElementById("content").value
+    const n_color = document.getElementById("color").value
+    const pinned_checkbox = document.getElementById("pinned")
+    let n_pinned = false
+    if(pinned_checkbox.checked){
+         n_pinned = true
+    }
 
     const new_note = {
         title: n_title,
         content: n_content,
-        color: "blue",
-        pinned: true,
-        creationDate: "17.05.2020",
+        color: n_color,
+        pinned: n_pinned,
+        creationDate: new Date(),
         tag: "asfas"
     }
     
@@ -65,10 +71,20 @@ const get_note = document.getElementById("get_button");
 get_note.addEventListener("click", ()=>{
     let notes_titles = GetFromLocalStorage("saved_notes_titles")
     let titles_array = notes_titles
-    titles_array.forEach(element => {
-        retrieved_note = GetFromLocalStorage(element)
-        title = retrieved_note.title
-        console.log(title)
+    CleanRenderSpace()
+    titles_unpinned_array =[]
+    titles_array.forEach(title => {
+        retrieved_note = GetFromLocalStorage(title)
+        if(retrieved_note.pinned == true){
+            RenderNote(retrieved_note)
+        }
+        else{
+            titles_unpinned_array.push(title)
+        }
+    });
+    titles_unpinned_array.forEach(title => {
+        retrieved_note = GetFromLocalStorage(title)
+        RenderNote(retrieved_note)
     });
 })
 
@@ -79,4 +95,12 @@ const note = {
     pinned: true,
     creationDate: "17.05.2020",
     tag: "asfas"
+}
+
+let saved_notes = document.getElementById("saved_notes")
+function CleanRenderSpace(){
+    saved_notes.innerHTML = ""
+}
+function RenderNote(object){
+    saved_notes.innerHTML += `<div class="note" style="background-color: ${object.color};" > <h>${object.title}</h> <br> ${object.content} <br> ${object.creationDate}</div>`
 }

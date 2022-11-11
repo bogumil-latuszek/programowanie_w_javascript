@@ -1,0 +1,19 @@
+#saved_notes {
+    display: block;
+}
+
+#note_container {
+    display: block;
+    width: fit-content;
+    border-style: solid;
+    border-radius: 1px;
+    border-color: black;
+}
+.note {
+    display: block;
+    border-style: solid;
+    border-radius: 1px;
+    border-color: black;
+    overflow-wrap: break-word;
+    width: 60vw;
+}
