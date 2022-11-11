@@ -9,17 +9,20 @@ const default_note = {
 }
 
 //save default note:
-SaveToLocalStorage( default_note.title, default_note)
+let saved_default_note = GetFromLocalStorage(default_note.title)
+if(saved_default_note == undefined){
+    SaveToLocalStorage( default_note.title, default_note)
+    //save key to find it later:
+    let notes_titles = GetFromLocalStorage("saved_notes_titles")
+    if(notes_titles == undefined){
+        notes_titles = [default_note.title]
+    }
+    else{
+        notes_titles.push(default_note.title)
+    }
+    SaveToLocalStorage("saved_notes_titles", notes_titles)
+}
 
-//save key to find it later:
-let notes_titles = GetFromLocalStorage("saved_notes_titles")
-if(notes_titles == undefined){
-    notes_titles = [default_note.title]
-}
-else{
-    notes_titles.push(default_note.title)
-}
-SaveToLocalStorage("saved_notes_titles", notes_titles)
 
 function SaveToLocalStorage(key, item){
     const item_stringified = JSON.stringify(item)
