@@ -1,6 +1,3 @@
-var start = document.getElementById("start");
-var reset = document.getElementById("reset");
-
 var canv = document.getElementById("canvas");
 var balls = [];
 
@@ -21,16 +18,34 @@ let ball = {
     vectory: -1
 }
 GenerateRandomBalls(30, balls, canv);
+let stop_animating = false;
 
-animate()
+var start_button = document.getElementById("start");
+start_button.addEventListener("click", ()=>{
+    stop_animating = false;
+    animate();
+});
+
+var reset_button = document.getElementById("reset");
+reset_button.addEventListener("click", ()=>{
+    stop_animating = true;
+    ctx.clearRect(0, 0, canv.width, canv.height);
+    GenerateRandomBalls(30, balls, canv);
+});
+
 function animate(){
+    if(stop_animating){
+       return true; // get out 
+    }
     // aktualizuj polozenie 
     UpdatePositions(balls);
     //wyczysc canvas
     ctx.clearRect(0, 0, canv.width, canv.height);
     // narysuj na canvas
     DrawBalls(balls);
-    requestAnimationFrame(animate) // this loops to the start, calling itself but will be processed only on request
+    if(!stop_animating){
+        requestAnimationFrame(animate) // this loops to the start, calling itself but will be processed only on request
+    }
 }
 
 function GenerateRandomBalls(quantity, balls_list, canvas){
