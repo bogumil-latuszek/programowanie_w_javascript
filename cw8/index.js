@@ -43,6 +43,10 @@ function animate(){
     ctx.clearRect(0, 0, canv.width, canv.height);
     // narysuj na canvas
     DrawBalls(balls);
+    //dodaj linie
+    const lines = createLines(balls, 100);
+    DrawLines(lines);
+    //end animation on condition
     if(!stop_animating){
         requestAnimationFrame(animate) // this loops to the start, calling itself but will be processed only on request
     }
@@ -80,6 +84,43 @@ function DrawBalls(balls_list){
     });
 }
 
+function DrawLines(lines){
+    ctx.strokeStyle = 'red';
+    ctx.lineWidth = 5;
+
+    lines.forEach(element => {
+        ctx.beginPath();
+        ctx.moveTo(element.x1, element.y1)
+        ctx.lineTo(element.x2, element.y2);
+        ctx.stroke();
+    });
+}
+
+function createLines(balls_list, draw_distance){
+    let lines = [];
+    for(let i = 0; i< balls_list.length-1; i++){
+        for(let a = i + 1; a< balls_list.length; a++){
+            let distance = getDistanceBetween2Points(balls_list[i].x, balls_list[i].y, balls_list[a].x, balls_list[a].y)
+            if(distance < draw_distance){
+                let new_line = {
+                    x1 : balls_list[i].x, 
+                    y1 : balls_list[i].y,
+                    x2 : balls_list[a].x,
+                    y2 : balls_list[a].y
+                }
+                lines.push(new_line);
+            }
+        }
+    }
+    return lines;
+}
+function getDistanceBetween2Points(x1, y1, x2, y2){
+    var a = x1 - x2;
+    var b = y1 - y2;
+
+    var c = Math.sqrt( a*a + b*b );
+    return c;
+}
 /*
 animate()
 function animate(){
