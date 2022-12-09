@@ -124,19 +124,19 @@ function UpdatePositions(balls_list){
 function UpdateConsideringBorderCollision(ball, border){
     let b = ball;
     if(b.x > border.xn){
-        b.x == border.xn
+        b.x = border.xn
         b.vectorx = - b.vectorx;
     }
     if(b.x < border.x0){
-        b.x == border.x0
+        b.x = border.x0
         b.vectorx = - b.vectorx;
     }
     if(b.y > border.yn){
-        b.y == border.yn
+        b.y = border.yn
         b.vectory = - b.vectory;
     }
     if(b.y < border.y0){
-        b.y == border.y0
+        b.y = border.y0
         b.vectory = - b.vectory;
     }
 }
