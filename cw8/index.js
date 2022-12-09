@@ -7,6 +7,36 @@ canv.height = canv.offsetHeight;
 var ctx = canv.getContext("2d");
 ctx.beginPath();
 
+
+var SliderY = document.getElementById("sliderY");
+var SliderX = document.getElementById("sliderX");
+
+var Y = SliderY.value;// lenght of line between two balls
+var X = SliderX.value;// num of balls
+
+
+SliderY.addEventListener("change", ()=>{
+    Y = SliderY.value;
+})
+
+SliderX.addEventListener("change", ()=>{
+    X = SliderX.value;
+    if(X > balls.length) {
+        numberOFBallsToAdd = X - balls.length;
+        for(let i = 0; i < numberOFBallsToAdd; i++){
+            let newBall = GenerateRandomBall(canv);
+            balls.push(newBall)
+        }
+    }
+    else{
+        numberOFBallsToSubstract = balls.length - X;
+        for(let i = 0; i < numberOFBallsToSubstract; i++){
+            balls.pop();
+        }
+    }
+    
+})
+
 //default data structure
 let ball = {
     x: 130,
@@ -17,7 +47,7 @@ let ball = {
     vectorx: 1,
     vectory: -1
 }
-GenerateRandomBalls(30, balls, canv);
+GenerateRandomBalls(X, balls, canv);
 let stop_animating = false;
 
 var start_button = document.getElementById("start");
@@ -30,7 +60,8 @@ var reset_button = document.getElementById("reset");
 reset_button.addEventListener("click", ()=>{
     stop_animating = true;
     ctx.clearRect(0, 0, canv.width, canv.height);
-    GenerateRandomBalls(30, balls, canv);
+    balls = [];
+    GenerateRandomBalls(X, balls, canv);
 });
 
 function animate(){
@@ -44,7 +75,7 @@ function animate(){
     // narysuj na canvas
     DrawBalls(balls);
     //dodaj linie
-    const lines = createLines(balls, 100);
+    const lines = createLines(balls, Y);
     DrawLines(lines);
     //end animation on condition
     if(!stop_animating){
@@ -54,28 +85,61 @@ function animate(){
 
 function GenerateRandomBalls(quantity, balls_list, canvas){
     for(let i = 0; i <quantity ; i++){
-        const ball = {
-            x: canvas.width * Math.random(),
-            y: canvas.height * Math.random(),
-            radius: 6 +  6 * Math.random(),
-            velocity: 100,
-            last_updated_time: performance.now(),
-            vectorx: -1 + 2 * Math.random(),
-            vectory: -1 + 2 * Math.random()
-        }
+        var ball = GenerateRandomBall(canvas);
         balls_list.push(ball);
     }
 }
 
+function GenerateRandomBall(canvas){
+    const ball = {
+        x: canvas.width * Math.random(),
+        y: canvas.height * Math.random(),
+        radius: 6 +  6 * Math.random(),
+        velocity: 100,
+        last_updated_time: performance.now(),
+        vectorx: -1 + 2 * Math.random(),
+        vectory: -1 + 2 * Math.random()
+    }
+    return ball;
+}
+
 function UpdatePositions(balls_list){
+    const Border={
+        x0 : 0,
+        xn : canv.width,
+        y0 : 0,
+        yn : canv.height
+    }
     balls_list.forEach(b => {
         let time_difference = (performance.now() - b.last_updated_time) / 1000 ;// time past last frame(in seconds)
         b.x = b.x + b.vectorx * b.velocity * time_difference; // calculate new position x 
         b.y = b.y + b.vectory * b.velocity * time_difference; // calculate new position y
+        
+        UpdateConsideringBorderCollision(b, Border); //redirect balls
+
         b.last_updated_time = performance.now();
     });
 }
 
+function UpdateConsideringBorderCollision(ball, border){
+    let b = ball;
+    if(b.x > border.xn){
+        b.x == border.xn
+        b.vectorx = - b.vectorx;
+    }
+    if(b.x < border.x0){
+        b.x == border.x0
+        b.vectorx = - b.vectorx;
+    }
+    if(b.y > border.yn){
+        b.y == border.yn
+        b.vectory = - b.vectory;
+    }
+    if(b.y < border.y0){
+        b.y == border.y0
+        b.vectory = - b.vectory;
+    }
+}
 function DrawBalls(balls_list){
     balls_list.forEach(element => {
         ctx.beginPath();
