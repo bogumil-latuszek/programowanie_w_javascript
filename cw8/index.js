@@ -13,8 +13,12 @@ var ball_counter = document.getElementById("ball_counter");
 var SliderY = document.getElementById("sliderY");
 var SliderX = document.getElementById("sliderX");
 
-var Y = SliderY.value;// lenght of line between two balls
-var X = SliderX.value;// num of balls
+var Y = window.screen.width/5
+SliderY.value = Y;// lenght of line between two balls
+SliderY.min = 0;
+SliderY.max = canv.width;
+
+var X =  SliderX.value;// num of balls
 
 
 SliderY.addEventListener("change", ()=>{
