@@ -7,6 +7,8 @@ canv.height = canv.offsetHeight;
 var ctx = canv.getContext("2d");
 ctx.beginPath();
 
+var fps_counter = document.getElementById("fps_counter");
+var ball_counter = document.getElementById("ball_counter");
 
 var SliderY = document.getElementById("sliderY");
 var SliderX = document.getElementById("sliderX");
@@ -68,6 +70,8 @@ function animate(){
     if(stop_animating){
        return true; // get out 
     }
+    //wyswietl ilosc kulek(balls)
+    ball_counter.innerText = "ilosc kulek:" +((balls) ? balls.length : 0)
     // aktualizuj polozenie 
     UpdatePositions(balls);
     //wyczysc canvas
@@ -77,6 +81,8 @@ function animate(){
     //dodaj linie
     const lines = createLines(balls, Y);
     DrawLines(lines);
+    //show fps
+    fps_counter.innerText = "fps:" + fps_mean_value;
     //end animation on condition
     if(!stop_animating){
         requestAnimationFrame(animate) // this loops to the start, calling itself but will be processed only on request
@@ -206,3 +212,46 @@ for (const kulka of kulki) {
 
 const result = await Promise.all(nowePolozeniaPromise);
 */
+
+
+//code below records  fps:
+var fps_mean_value = 0;
+var fps_recording = [];
+
+function update_fps(fps){
+    if(fps_recording.length >=10){
+        var sum = 0;
+        var quantity = 0;
+        fps_recording.forEach(element => {
+            sum += element;
+            quantity += 1;
+        });
+        fps_mean_value = sum / quantity;
+        fps_recording = []
+    }
+    else{
+        fps_recording.push(fps)
+    }
+}
+
+var lastCalledTime;
+
+function start_recording_fps() {
+
+  if(!lastCalledTime) {
+     lastCalledTime = performance.now();
+  }
+  else{
+    delta = (performance.now() - lastCalledTime)/1000;
+    lastCalledTime = performance.now();
+    let fps = 1/delta;
+    update_fps(fps);
+  }
+  requestAnimationFrame(start_recording_fps);
+} 
+
+//code above records fps
+
+//start recording fps:
+start_recording_fps();
+//////////////////////
