@@ -1,6 +1,30 @@
 #canvas {
-    width: 70vw;
-    height: 70vw;
+    display: none;
+    width: 5vw;
+    height: 5vw;
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+}
+.main_cont {
+    display: flex;
+    width: 20vw;
+    height: fit-content;
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+}
+.icon_cont {
+    display: block;
+    width: fit-content;
+    height: fit-content;
+    border-style: solid;
+    border-width: 2px;
+    border-color: black;
+}
+.descr_cont {
+    display: block;
+    width: fit-content;
     border-style: solid;
     border-width: 2px;
     border-color: black;
