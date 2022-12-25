@@ -26,28 +26,9 @@ let icon_container = document.getElementById("icon");
             console.log("error");
         }
     })
-    .then((data)=>console.log(data))
+    .then((data)=>console.log(data))*/
 
-fetch('https://reqres.in/api/users', {
-    method: 'POST',
-    headers: {
-        'content-type': 'application/json'
-    },
-    body: JSON.stringify({
-        name: 'User 1'
-    })
-})
-.then((resp)=>{
-    if(resp.ok){
-        console.log("ok");
-        return resp.json();
-    }
-    else{
-        console.log("error");
-    }
-})
-.then((data)=>console.log(data))
-*/
+
 submit_city_button.addEventListener("click", ()=>{
     try{
         const city_name = city_name_textbox.value
@@ -68,6 +49,7 @@ async function getWeather(city_name)
     let resp = await fetch(full_adress);
     if(resp.ok)
     {
+        SaveCityName(city_name);// remember the location
         console.log("ok");
         return new Promise((resolve, reject) => 
         {
@@ -76,6 +58,7 @@ async function getWeather(city_name)
     }
     else{
         console.log("error");
+        throw new Error("not found");
     }
 }
 
@@ -108,26 +91,81 @@ function CreateHtmlWeatherContainer(weather){
     main_container.appendChild(icon_container); // add icon to main cont
     return main_container;
 }
+function SaveToLocalStorage(key, item){
+    const item_stringified = JSON.stringify(item)
+    localStorage.setItem(key,  item_stringified );
+}
 
-/*fetch('https://api.openweathermap.org/data/2.5/weather?q=London,uk&APPID=d5976b89430eb34f49cf05f0740ad27e')
-    .then((resp)=>{
-        if(resp.ok){
-            console.log("ok");
-            return resp.json();
+function GetFromLocalStorage(key){
+    const item_stringified = localStorage.getItem(key)
+    const item = JSON.parse(item_stringified)
+    return item
+}
+
+
+
+async function SaveCityName(city_name){
+    if(!CityNameAlreadySaved(city_name)){
+        let saved_cities = GetFromLocalStorage("saved_cities");
+        if(saved_cities == null){
+            saved_cities = [];
         }
-        else{
-            console.log("error");
+        saved_cities.push(city_name);
+        SaveToLocalStorage("saved_cities", saved_cities);
+    }
+}
+
+function CityNameAlreadySaved(city_name){
+    let saved_cities = [];
+    try{
+        saved_cities = GetFromLocalStorage("saved_cities");
+        if(saved_cities == null){
+            return false;
         }
-    })
-    .then((data)=>console.log(data))
-*/
+    }
+    catch(e){
+        return false;
+    }
+    let found = false;
+    saved_cities.forEach(saved_city_name => {
+        if(saved_city_name==city_name){
+            found = true;
+        }
+    });
+    return found;
+}
 
-getWeather('London,uk').then((weather)=>
-{
-    DisplayCityWeather(weather)
-})
+function GetAllCityNames(){
+    let saved_cities = [];
+    try{
+        saved_cities = GetFromLocalStorage("saved_cities");
+    }
+    catch(e){
+        console.log(e);
+    }
+    finally{
+        if(saved_cities == null){
+            saved_cities = [];
+        }
+        return saved_cities;
+    }
+}
 
-getWeather('Berlin,de').then((weather)=>
-{
-    DisplayCityWeather(weather)
-})
+
+
+
+let saved_cities = GetAllCityNames();
+//on start: load every city info
+saved_cities.forEach(city_name => {
+    try{
+        getWeather(city_name).then((weather)=>
+        {
+            DisplayCityWeather(weather)
+        })
+    }
+    catch( e ){
+        console.log("weather not found for this city name")
+    }
+});
+
+//localStorage.getItem(key) localStorage.setItem(key, stringValue) localStorage.removeItem(key) localStorage.clear()
