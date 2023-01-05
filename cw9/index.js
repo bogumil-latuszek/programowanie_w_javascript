@@ -65,9 +65,6 @@ async function getWeather(city_name)
     }
 }
 
-
-
-
 let current_wether = {
     city: "Kraków",
     time: Date.now(),
@@ -81,18 +78,21 @@ function removeItemFromMemory(){
 }
 
 function DisplayCityWeather(city_name, weather){
-    const HtmlCityWeatherContainer = CreateHtmlCityWeatherContainer(city_name, weather)
+    const HtmlCityWeatherContainer = CreateHtmlCityWeather(city_name, weather)
     weather_list.appendChild(HtmlCityWeatherContainer);
 }
-function CreateHtmlCityWeatherContainer(city_name, weather){
+function CreateHtmlCityWeather(city_name, weather){
+    return CreateHtmlCityWeatherContainer(city_name, weather.main.temp, weather.main.humidity, weather.weather[0].icon)
+}
+function CreateHtmlCityWeatherContainer(city_name, temperature, humidity, icon){
     var main_container = document.createElement("div");//create cont to hold weather description and icon
     main_container.setAttribute("class","main_cont");
     var city_name_container = document.createElement("div");
-    city_name_container.innerText = weather.name;
+    city_name_container.innerText = city_name
     var temperature_container = document.createElement("div");
-    temperature_container.innerText = Math.ceil(weather.main.temp -  273.15) +"°C"
+    temperature_container.innerText = Math.ceil(temperature -  273.15) +"°C"
     var humidity_container = document.createElement("div");
-    humidity_container.innerText = weather.main.humidity +"% Humidity"
+    humidity_container.innerText = humidity +"% Humidity"
     //var description_container = document.createElement("div");
     city_name_container.setAttribute("class","descr_cont");
     humidity_container.setAttribute("class","descr_cont");
@@ -105,7 +105,7 @@ function CreateHtmlCityWeatherContainer(city_name, weather){
     //main_container.appendChild(description_container);//add description to main cont
     var icon_container = document.createElement("img") 
     icon_container.setAttribute("class","icon_cont");
-    let icon_code = weather.weather[0].icon; 
+    let icon_code = icon; 
     icon_container.src = 'http://openweathermap.org/img/wn/'+ icon_code +'@2x.png';
     main_container.appendChild(icon_container); // add icon to main cont
 
