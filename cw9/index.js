@@ -31,11 +31,14 @@ let icon_container = document.getElementById("icon");
 
 submit_city_button.addEventListener("click", ()=>{
     try{
-        const city_name = city_name_textbox.value
-        getWeather(city_name).then((weather)=>
-        {
-            DisplayCityWeather(city_name, weather)
-        })
+        const loaded_cities_num = weather_list.childElementCount;
+        if (loaded_cities_num < 10) {
+            const city_name = city_name_textbox.value
+            getWeather(city_name).then((weather)=>
+            {
+                DisplayCityWeather(city_name, weather)
+            })
+        }
     }
     catch( e ){
         console.log("weather not found for this city name")
@@ -137,8 +140,10 @@ async function SaveCityName(city_name){
         if(saved_cities == null){
             saved_cities = [];
         }
-        saved_cities.push(city_name);
-        SaveToLocalStorage("saved_cities", saved_cities);
+        if (saved_cities.length <10) {
+            saved_cities.push(city_name);
+            SaveToLocalStorage("saved_cities", saved_cities);
+        }    
     }
 }
 async function DeleteCityName(name_to_delete){
@@ -191,12 +196,11 @@ function GetAllCityNames(){
     }
 }
 
-
-
-
-let saved_cities = GetAllCityNames();
-//on start: load every city info
-saved_cities.forEach(city_name => {
+function refresh(){
+    weather_list.innerHTML ='';
+    let saved_cities = GetAllCityNames();
+    //on start: load every city info
+    saved_cities.forEach(city_name => {
     try{
         getWeather(city_name).then((weather)=>
         {
@@ -207,4 +211,10 @@ saved_cities.forEach(city_name => {
         console.log("weather not found for this city name")
     }
 });
+}
+
+
+
+refresh();
+setInterval(refresh, 5*60000);
 //localStorage.getItem(key) localStorage.setItem(key, stringValue) localStorage.removeItem(key) localStorage.clear()
