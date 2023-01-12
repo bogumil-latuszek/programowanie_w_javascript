@@ -13,8 +13,23 @@ calculate_button.addEventListener("click", ()=>{
 })
 
 function calculate(){
-    const sum = Sumnumbers(convertToNumber(num1.value), convertToNumber(num2.value), convertToNumber(num3.value), convertToNumber(num4.value))
+    val1 = convertToNumber(num1.value)
+    val2 = convertToNumber(num2.value)
+    val3 = convertToNumber(num3.value)
+    val4 = convertToNumber(num4.value)
+
+
+    const sum = SumNumbers(val1, val2, val3, val4)
     sum_div.value = sum
+
+    const med = Median(sum)
+    median_div.value = med
+
+    const min = Min(val1, val2, val3, val4)
+    min_div.value = min
+
+    const max = Max(val1, val2, val3, val4)
+    max_div.value = max
 }
 
 function convertToNumber(string){
@@ -25,6 +40,27 @@ function convertToNumber(string){
     return num;
 }
 
-function Sumnumbers(v1 = 0, v2 = 0,v3 = 0,v4 = 0,){
+function SumNumbers(v1 = 0, v2 = 0,v3 = 0,v4 = 0,){
     return v1 + v2 + v3 + v4;
 }
+
+function Median(num){
+    return num/4;
+}
+
+function Min(v1 = 0, v2 = 0,v3 = 0,v4 = 0,){
+    let min = v1
+    if (v2<min) min = v2;
+    if (v3<min) min = v3;
+    if (v4<min) min = v4;
+    return min
+}
+
+function Max(v1 = 0, v2 = 0,v3 = 0,v4 = 0,){
+    let min = v1
+    if (v2>min) min = v2;
+    if (v3>min) min = v3;
+    if (v4>min) min = v4;
+    return min
+}
+
