@@ -8,6 +8,19 @@ var median_div = document.getElementById("median")
 var min_div = document.getElementById("min")
 var max_div = document.getElementById("max")
 
+num1.addEventListener("change", ()=>{
+    calculate()
+})
+num2.addEventListener("change", ()=>{
+    calculate()
+})
+num3.addEventListener("change", ()=>{
+    calculate()
+})
+num4.addEventListener("change", ()=>{
+    calculate()
+})
+
 calculate_button.addEventListener("click", ()=>{
     calculate()
 })
