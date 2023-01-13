@@ -13,8 +13,20 @@
     border-color: black;
 }
 
+.ge_edit {grid-area: edit;}
+.ge_delete { grid-area: delete;}
+.ge_title { grid-area: title; }
+.ge_date { grid-area: date;}
+
+.grid_container {
+    width: 60vw;
+    display: grid;
+    grid-template-areas: ' delete edit title title date date';
+    background: transparent;
+}
+
 .saved_note {
-    display: flex;
+    display: flexbox;
     width: fit-content;
     height: fit-content;
     border-style: solid;
@@ -22,16 +34,10 @@
     border-color: black;
 }
 
-.note {
-    display: block;
-    word-break:break-all;
-    overflow-y: auto;
-    width: 45vw;
-    height: 20vh;
-}
-
-.delete_button {
-    display: inline;
-    width: 10vw;
-    height: 20vh;
+.content_box {
+    background: transparent;
+    overflow : auto;
+    font: auto;
+    width: 60vw;
+    height: 30vh;
 }

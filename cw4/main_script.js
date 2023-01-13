@@ -38,6 +38,23 @@ function GetFromLocalStorage(key){
 
 const submit_note = document.getElementById("submit_button");
 
+function AddNote(title, content, background_color, pinned, creation_date){
+    const new_note = {
+        title: title,
+        content: content,
+        color: background_color,
+        pinned: pinned,
+        creationDate: creation_date,
+        tag: "asfas"
+    }
+    
+    SaveToLocalStorage(title, new_note)
+
+    let notes_titles = GetFromLocalStorage("saved_notes_titles")
+    let titles_array = notes_titles
+    titles_array.push(title)
+    SaveToLocalStorage("saved_notes_titles", titles_array)
+}
 submit_note.addEventListener("click", ()=>{
 
     const note_container = document.getElementById("note_container")
@@ -50,29 +67,15 @@ submit_note.addEventListener("click", ()=>{
          n_pinned = true
     }
 
-    const new_note = {
-        title: n_title,
-        content: n_content,
-        color: n_color,
-        pinned: n_pinned,
-        creationDate: new Date(),
-        tag: "asfas"
-    }
-    
-    SaveToLocalStorage(n_title, new_note)
-
-    let notes_titles = GetFromLocalStorage("saved_notes_titles")
-    let titles_array = notes_titles
-    titles_array.push(n_title)
-    SaveToLocalStorage("saved_notes_titles", titles_array)
+    AddNote(n_title, n_content, n_color, n_pinned, new Date())
 })
 
-const get_note = document.getElementById("get_button");
+const get_notes = document.getElementById("get_button");
 
-get_note.addEventListener("click", ()=>{
+function GetAllNotes(){
     let notes_titles = GetFromLocalStorage("saved_notes_titles")
     let titles_array = notes_titles
-    CleanRenderSpace()
+    ClearRenderSpace()
     titles_unpinned_array =[]
     titles_array.forEach(title => {
         retrieved_note = GetFromLocalStorage(title)
@@ -87,6 +90,9 @@ get_note.addEventListener("click", ()=>{
         retrieved_note = GetFromLocalStorage(title)
         RenderNote(retrieved_note)
     });
+}
+get_notes.addEventListener("click", ()=>{
+   GetAllNotes()
 })
 
 const note = {
@@ -99,23 +105,54 @@ const note = {
 }
 
 let saved_notes = document.getElementById("saved_notes")
-function CleanRenderSpace(){
+function ClearRenderSpace(){
     saved_notes.innerHTML = ""
 }
 function RenderNote(object){
-    var saved_note = document.createElement("div")
-    saved_note.className = "saved_note"
-    saved_note.innerHTML += `<div class="note" style="background-color: ${object.color};" > <h>${object.title}</h> <br> ${object.content} <br> ${object.creationDate}</div>`
 
-    var delete_button = document.createElement("button");
-    delete_button.setAttribute("class","delete_button");
+    let saved_note = document.createElement("div")
+    saved_note.className = "saved_note"
+
+    let edit_button = document.createElement("button");
+    edit_button.setAttribute("class","ge_edit");
+    edit_button.setAttribute("title", object.title);
+    edit_button.innerText = "Change";
+    edit_button.addEventListener("click", EditItem);
+
+    let delete_button = document.createElement("button");
+    delete_button.setAttribute("class","ge_delete");
     delete_button.setAttribute("title", object.title);
     delete_button.innerText = "X";
     delete_button.addEventListener("click", removeItemFromMemory);
-    
-    saved_note.appendChild(delete_button);
 
+    let title_box = document.createElement("Textarea")
+    title_box.setAttribute("class", "ge_title")
+    title_box.innerText = object.title
+    
+    let date_box = document.createElement("Textarea")
+    date_box.setAttribute("class", "ge_date")
+    date_box.innerText = object.creationDate
+
+    grid_cont = document.createElement("div")
+    grid_cont.setAttribute("class", "grid_container")
+    grid_cont.appendChild(delete_button)
+    grid_cont.appendChild(edit_button)
+    grid_cont.appendChild(title_box)
+    grid_cont.appendChild(date_box)
+
+    saved_note.setAttribute("pinned", object.pinned)
+    saved_note.setAttribute("color_value", object.color)
+    saved_note.setAttribute("style", `background-color: ${object.color}`)
+    
+    content_box = document.createElement("Textarea")
+    content_box.setAttribute("class", "content_box")
+    content_box.innerText = object.content
+    //content_box.setAttribute("style", `height: ${content_box.scrollHeight}px`)
+
+    saved_note.appendChild(grid_cont);
+    saved_note.appendChild(content_box);
     saved_notes.appendChild(saved_note)
+    
 }
 
 function removeItemFromMemory(){
@@ -137,4 +174,29 @@ async function DeleteNote(note_title){
     }
     SaveToLocalStorage("saved_notes_titles", new_saved_titles);
     localStorage.removeItem(note_title);
+}
+
+function EditItem(){
+    let title = this.attributes.title.value
+    console.log(title)
+    let grid_cont =  this.parentElement
+    console.log(grid_cont)
+    let properties = grid_cont.children
+    let new_title = properties[2].value
+    let new_date = properties[3].value
+    console.log(new_title + new_date)
+    let note = grid_cont.parentElement
+    let content = note.children[1].value
+    console.log(content)
+    let bcgr_color = note.attributes.color_value.value
+    let pinned = note.attributes.pinned.value
+    if (pinned == "true") {
+        pinned = true;
+    }
+    else{
+        pinned = false;
+    }
+    DeleteNote(this.attributes.title.value)
+    AddNote(new_title, content, bcgr_color, pinned, new_date )
+    GetAllNotes()
 }
