@@ -1,5 +1,8 @@
 #saved_notes {
-    display: block;
+    font-size: large;
+    display: flexbox;
+    width: fit-content;
+    height: fit-content;
 }
 
 #note_container {
@@ -9,11 +12,26 @@
     border-radius: 1px;
     border-color: black;
 }
-.note {
-    display: block;
+
+.saved_note {
+    display: flex;
+    width: fit-content;
+    height: fit-content;
     border-style: solid;
     border-radius: 1px;
     border-color: black;
-    overflow-wrap: break-word;
-    width: 60vw;
+}
+
+.note {
+    display: block;
+    word-break:break-all;
+    overflow-y: auto;
+    width: 45vw;
+    height: 20vh;
+}
+
+.delete_button {
+    display: inline;
+    width: 10vw;
+    height: 20vh;
 }
