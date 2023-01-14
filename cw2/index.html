@@ -10,20 +10,58 @@
 </head>
 
 <body>
-    <script src="glider.min.js"></script>
-    <div id="slider">
-        <div class="slides">
-        	<img src="http://picsum.photos/seed/picsum/600/400" alt="">
-        	<img src="http://picsum.photos/seed/picsum/600/400" alt="">
-        	<img src="http://picsum.photos/seed/picsum/600/400" alt="">
-        	<img src="http://picsum.photos/seed/picsum/600/400" alt="">
-        	<img src="http://picsum.photos/seed/picsum/600/400" alt="">
-        	<img src="http://picsum.photos/seed/picsum/600/400" alt="">
+    <div class="glider-contain multiple">
+        <h1>user testimonial</h1>
+
+        <button class="glider-prev">
+            <i>&#60;</i>
+        </button>
+
+        <div class="glider">
+            <figure>
+                <blockquote>
+                    "I have nothing substantial to say"
+                </blockquote>
+                <figcaption>famous person</figcaption>
+            </figure>
+            <figure>
+                <blockquote>
+                    "fast food makes me slow"
+                </blockquote>
+                <figcaption>famous person</figcaption>
+            </figure>
+            <figure>
+                <blockquote>
+                    "why is he called BigHat? I guess we'll never know"
+                </blockquote>
+                <figcaption>famous person</figcaption>
+            </figure>
         </div>
+
+        <button class="glider-next">
+            <i>&#62;</i>
+        </button>
+
+        <div id="dots" class="glider-dots"></div>
     </div>
-    <main>
-    </main>
-    <script src="main_script.js"></script>
+
+    <script src="glider.min.js"></script>
+   
+   <script>
+    
+        new Glider(document.querySelector('.glider'), {
+            slidesToShow: 1,
+            draggable: true,
+            dots: '#dots',
+            arrows: {
+                prev: '.glider-prev',
+                next: '.glider-next'
+            }
+        })
+   </script>
+
+
+    
 </body>
 
 </html>
