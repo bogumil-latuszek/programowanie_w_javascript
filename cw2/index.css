@@ -1,26 +1,3 @@
-#slider {
-    width: 600px;
-    height: 400px;
-    margin: 100px auto 0 auto;
-    overflow: hidden;
-}
-#slider .slides {
-    display: flex;
-    animation-name: pociag-w-lewo;
-    animation-duration: 4s;
-    animation-delay: 1s;
-    animation-timing-function: ease-in-out;
-}
-
-@keyframes pociag-w-lewo {
-    0% {
-        transform: translateX(0);
-    }
-    100% {
-        transform: translateX(-2000px);
-    }
-}
-
 body {
     background-color: lightgray;
     margin: 0;
@@ -48,6 +25,12 @@ figure figcaption {
     font-weight: bold;
     color:gray;
 }
+.slider_img{
+    width: 100px;
+}   
+.image_cont{
+    margin-left: 40%;
+}
 
 .glider-next {
     top: 50%;
@@ -62,3 +45,13 @@ figure figcaption {
     margin-top: 12%;
     margin-bottom: 8%;
 }
+
+#stop, #stop_img {
+    display: block;
+    width: 50px;
+    padding: 0;
+    margin: 0;
+    border: none;
+}
+
+

@@ -11,7 +11,7 @@
 
 <body>
     <div class="glider-contain multiple">
-        <h1>user testimonial</h1>
+        <h1>Gallery</h1>
 
         <button class="glider-prev">
             <i>&#60;</i>
@@ -25,10 +25,9 @@
                 <figcaption>famous person</figcaption>
             </figure>
             <figure>
-                <blockquote>
-                    "fast food makes me slow"
-                </blockquote>
-                <figcaption>famous person</figcaption>
+                <div class="image_cont">
+                    <img class="slider_img" src="./images/tree.jpg">
+                </div>
             </figure>
             <figure>
                 <blockquote>
@@ -43,24 +42,15 @@
         </button>
 
         <div id="dots" class="glider-dots"></div>
+
+        <button id="stop" >
+            <img id="stop_img" src="./images/pause.png">
+        </button>
     </div>
 
     <script src="glider.min.js"></script>
    
-   <script>
-    
-        new Glider(document.querySelector('.glider'), {
-            slidesToShow: 1,
-            draggable: true,
-            dots: '#dots',
-            arrows: {
-                prev: '.glider-prev',
-                next: '.glider-next'
-            }
-        })
-   </script>
-
-
+   <script src="main_script.js"> </script>
     
 </body>
 
