@@ -11,7 +11,7 @@ ctx.beginPath();
 let default_ball = {
     x: 130,
     y: 30,
-    radius: 5,
+    radius: 15,
     color: "blue",
     velocity: 40,
     last_updated_time: performance.now(),
@@ -20,9 +20,9 @@ let default_ball = {
 }
 
 let hole = {
-    x: 0,
-    y: 100,
-    radius: 20,
+    x: 400,
+    y: 400,
+    radius: 40,
     color: "black"
 }
 
@@ -89,7 +89,7 @@ function UpdateConsideringBorderCollision(ball, border){
 }
 
 function DrawCircle(circle){
-    //ctx.strokeStyle = circle.color
+    ctx.strokeStyle = circle.color
     ctx.beginPath();
     ctx.arc(circle.x, circle.y, circle.radius, 0, 2 * Math.PI);
     ctx.fill();
@@ -104,7 +104,7 @@ function onDeviceMove(event) {
     let x = Math.sin(gamma_radian)
     let y = Math.sin(beta_radian)
     default_ball.vectorx = x
-    default_ball.vectory = -y
+    default_ball.vectory = y
     //console.log(vect1.x +" "+ vect1.y)
 }
 
