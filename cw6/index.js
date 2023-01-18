@@ -122,6 +122,7 @@ function animate() {
         win = true;
         let finished_time = (performance.now() - start_time) /1000
         canv_cont.innerHTML = `You win, time: ${finished_time} s`
+        SaveTime(finished_time + "s")
     }
     if(!win){
         requestAnimationFrame(animate)
@@ -129,3 +130,22 @@ function animate() {
 }
 
 requestAnimationFrame(animate)
+
+
+function SaveToLocalStorage(key, item){
+    const item_stringified = JSON.stringify(item)
+    localStorage.setItem(key,  item_stringified );
+}
+function GetFromLocalStorage(key){
+    const item_stringified = localStorage.getItem(key)
+    const item = JSON.parse(item_stringified)
+    return item
+}
+async function SaveTime(time){
+    let saved_time = GetFromLocalStorage("saved_time");
+    if(saved_time == null){
+        saved_time = [];
+    }
+    saved_time.push(time);
+    SaveToLocalStorage("saved_time", saved_time);
+}
