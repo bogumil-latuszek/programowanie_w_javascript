@@ -28,11 +28,11 @@ async function StartAnimation(){
         if (cont == false) {
             return;
         }
-        if (curr_index < 2) {
-            curr_index++
+        if (curr_index >0) {
+            curr_index--
         }
         else{
-            curr_index = 0;
+            curr_index = 2;
         }
         glider.scrollItem(curr_index, false)
         requestAnimationFrame(StartAnimation)
