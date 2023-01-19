@@ -48,12 +48,12 @@ function AddNote(title, content, background_color, pinned, creation_date){
         tag: "asfas"
     }
     
-    SaveToLocalStorage(title, new_note)
-
-    let notes_titles = GetFromLocalStorage("saved_notes_titles")
-    let titles_array = notes_titles
-    titles_array.push(title)
-    SaveToLocalStorage("saved_notes_titles", titles_array)
+    let notes_content = GetFromLocalStorage("saved_notes_content")
+    if (notes_content == null) {
+        notes_content = []
+    }
+    notes_content.push(new_note)
+    SaveToLocalStorage("saved_notes_content", notes_content)
 }
 submit_note.addEventListener("click", ()=>{
 
@@ -73,23 +73,25 @@ submit_note.addEventListener("click", ()=>{
 const get_notes = document.getElementById("get_button");
 
 function GetAllNotes(){
-    let notes_titles = GetFromLocalStorage("saved_notes_titles")
-    let titles_array = notes_titles
+
+    let notes = GetFromLocalStorage("saved_notes_content")
+    if (notes == null) {
+        return;
+    }
     ClearRenderSpace()
-    titles_unpinned_array =[]
-    titles_array.forEach(title => {
-        retrieved_note = GetFromLocalStorage(title)
-        if(retrieved_note.pinned == true){
-            RenderNote(retrieved_note)
+    notes_unpinned_array =[]
+    notes.forEach(note => {
+        if(note.pinned == true){
+            RenderNote(note)
         }
         else{
-            titles_unpinned_array.push(title)
+            notes_unpinned_array.push(note)
         }
     });
-    titles_unpinned_array.forEach(title => {
-        retrieved_note = GetFromLocalStorage(title)
-        RenderNote(retrieved_note)
+    notes_unpinned_array.forEach(note => {
+        RenderNote(note)
     });
+    
 }
 get_notes.addEventListener("click", ()=>{
    GetAllNotes()
@@ -116,12 +118,14 @@ function RenderNote(object){
     let edit_button = document.createElement("button");
     edit_button.setAttribute("class","ge_edit");
     edit_button.setAttribute("title", object.title);
+    edit_button.setAttribute("creationdate", object.creationDate);
     edit_button.innerText = "Change";
     edit_button.addEventListener("click", EditItem);
 
     let delete_button = document.createElement("button");
     delete_button.setAttribute("class","ge_delete");
     delete_button.setAttribute("title", object.title);
+    delete_button.setAttribute("creationdate", object.creationDate);
     delete_button.innerText = "X";
     delete_button.addEventListener("click", removeItemFromMemory);
 
@@ -156,24 +160,23 @@ function RenderNote(object){
 }
 
 function removeItemFromMemory(){
-    DeleteNote(this.attributes.title.value)
-    this.parentNode.remove();
+    DeleteNote(this.attributes.creationdate.value)
+    this.parentNode.parentNode.remove();
 }
 
-async function DeleteNote(note_title){
-    let saved_titles = GetFromLocalStorage("saved_notes_titles");
-    if(saved_titles == null){
+async function DeleteNote(note_date){
+    let saved_notes = GetFromLocalStorage("saved_notes_content");
+    if(saved_notes == null){
         return 0;
     }
-    let new_saved_titles = [];
-    for (let i = 0; i < saved_titles.length; i++) {
-        const title = saved_titles[i];
-        if (title != note_title) {
-            new_saved_titles.push(title);
+    let new_saved_notes = [];
+    for (let i = 0; i < saved_notes.length; i++) {
+        const date = saved_notes[i].creationDate;
+        if (date != note_date) {
+            new_saved_notes.push(saved_notes[i]);
         }
     }
-    SaveToLocalStorage("saved_notes_titles", new_saved_titles);
-    localStorage.removeItem(note_title);
+    SaveToLocalStorage("saved_notes_content", new_saved_notes);
 }
 
 function EditItem(){
@@ -196,7 +199,7 @@ function EditItem(){
     else{
         pinned = false;
     }
-    DeleteNote(this.attributes.title.value)
+    DeleteNote(this.attributes.creationdate.value)
     AddNote(new_title, content, bcgr_color, pinned, new_date )
     GetAllNotes()
 }
